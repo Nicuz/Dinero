@@ -1,23 +1,21 @@
 //
-//  AddExpenseView.m
+//  AddExpenseTable.m
 //  Dinero
 //
-//  Created by Domenico Majorana on 20/01/2019.
+//  Created by Domenico Majorana on 25/01/2019.
 //  Copyright © 2019 Domenico Majorana. All rights reserved.
 //
 
-#import "AddExpenseView.h"
+#import "AddExpenseTable.h"
 #import "Database.h"
 
-@interface AddExpenseView() {
+@interface AddExpenseTable() {
     @public Database *getDatabaseInstance;
 }
+
 @end
 
-@implementation AddExpenseView
-
-@synthesize scrollView;
-
+@implementation AddExpenseTable
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,14 +41,13 @@
     _currentCurrency = self.currencies[0];
     _currentCategory = self.categories[0];
     
-    //Subscribe to keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
     //Subscribe to taps on the UI and dismiss the keyboard
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                            action:@selector(dismissKeyboard)];
+                                                                          action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    
+    self.tableView.allowsSelection = NO;
 }
 
 -(void)dismissKeyboard {
@@ -59,28 +56,10 @@
     [_notesField resignFirstResponder];
 }
 
-//Store keyboard height
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    _keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-}
-
 //Hide keyboard when pressing Return
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self dismissKeyboard];
     return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    //Scroll if textfield is under the keyboard
-    if (textField.frame.origin.y > _keyboardHeight) {
-        CGPoint scrollPoint = CGPointMake(0, textField.frame.origin.y - _keyboardHeight);
-        [scrollView setContentOffset:scrollPoint animated:YES];
-    }
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [scrollView setContentOffset:CGPointZero animated:YES];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -116,7 +95,6 @@
 }
 
 - (IBAction)addToDatabase:(id)sender {
-    
     //Get current date from DatePicker
     NSDate *myDate = _datePicker.date;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
