@@ -8,7 +8,7 @@
 
 #import "ExpensesList.h"
 #import "Database.h"
-#import "Details.h"
+#import "DetailsTable.h"
 #import "CSV.h"
 
 @interface ExpensesList() {
@@ -104,7 +104,7 @@
 {
     if ([segue.identifier isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        Details *detailView = [segue destinationViewController];
+        DetailsTable *detailView = [segue destinationViewController];
         detailView.expenseValue = self.expenses[indexPath.row][@"name"];
         detailView.dateValue = self.expenses[indexPath.row][@"date"];
         detailView.amountValue = self.expenses[indexPath.row][@"amount"];

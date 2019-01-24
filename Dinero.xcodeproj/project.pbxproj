@@ -19,11 +19,11 @@
 		03EF9DC321F511CD0024EA47 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC221F511CD0024EA47 /* Database.m */; };
 		03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC621F523170024EA47 /* CategoriesList.m */; };
 		03EF9DD021F603560024EA47 /* ExpenseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DCF21F603560024EA47 /* ExpenseCell.m */; };
-		03EF9DD721F69A220024EA47 /* Details.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DD621F69A220024EA47 /* Details.m */; };
 		03EF9DD921F747510024EA47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03EF9DD821F747510024EA47 /* Assets.xcassets */; };
 		03EF9DDF21F74FCF0024EA47 /* CSV.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DDE21F74FCF0024EA47 /* CSV.m */; };
 		03EF9DE421F902810024EA47 /* SettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DE321F902800024EA47 /* SettingCell.m */; };
 		03EF9DE821F903320024EA47 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DE721F903320024EA47 /* Settings.m */; };
+		03EF9DF221FA60330024EA47 /* DetailsTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DF121FA60330024EA47 /* DetailsTable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +47,6 @@
 		03EF9DC621F523170024EA47 /* CategoriesList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CategoriesList.m; sourceTree = "<group>"; };
 		03EF9DCE21F603560024EA47 /* ExpenseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpenseCell.h; sourceTree = "<group>"; };
 		03EF9DCF21F603560024EA47 /* ExpenseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpenseCell.m; sourceTree = "<group>"; };
-		03EF9DD521F69A220024EA47 /* Details.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Details.h; sourceTree = "<group>"; };
-		03EF9DD621F69A220024EA47 /* Details.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Details.m; sourceTree = "<group>"; };
 		03EF9DD821F747510024EA47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03EF9DDD21F74FCF0024EA47 /* CSV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSV.h; sourceTree = "<group>"; };
 		03EF9DDE21F74FCF0024EA47 /* CSV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CSV.m; sourceTree = "<group>"; };
@@ -56,6 +54,8 @@
 		03EF9DE321F902800024EA47 /* SettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingCell.m; sourceTree = "<group>"; };
 		03EF9DE621F903320024EA47 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		03EF9DE721F903320024EA47 /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		03EF9DF021FA60330024EA47 /* DetailsTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailsTable.h; sourceTree = "<group>"; };
+		03EF9DF121FA60330024EA47 /* DetailsTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailsTable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,8 +173,8 @@
 		03EF9DD421F69A000024EA47 /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				03EF9DD521F69A220024EA47 /* Details.h */,
-				03EF9DD621F69A220024EA47 /* Details.m */,
+				03EF9DF021FA60330024EA47 /* DetailsTable.h */,
+				03EF9DF121FA60330024EA47 /* DetailsTable.m */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -307,7 +307,6 @@
 			files = (
 				03A95D6321F37A7A00742E2A /* main.m in Sources */,
 				03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */,
-				03EF9DD721F69A220024EA47 /* Details.m in Sources */,
 				03EF9DE821F903320024EA47 /* Settings.m in Sources */,
 				03EF9DC321F511CD0024EA47 /* Database.m in Sources */,
 				03EF9DAE21F4BF9D0024EA47 /* AddExpenseView.m in Sources */,
@@ -316,6 +315,7 @@
 				03A95D7121F3992900742E2A /* ExpensesList.m in Sources */,
 				03EF9DE421F902810024EA47 /* SettingCell.m in Sources */,
 				03EF9DD021F603560024EA47 /* ExpenseCell.m in Sources */,
+				03EF9DF221FA60330024EA47 /* DetailsTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
