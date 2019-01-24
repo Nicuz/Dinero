@@ -14,7 +14,6 @@
 		03A95D6021F37A7A00742E2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03A95D5E21F37A7A00742E2A /* LaunchScreen.storyboard */; };
 		03A95D6321F37A7A00742E2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D6221F37A7A00742E2A /* main.m */; };
 		03A95D7121F3992900742E2A /* ExpensesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D7021F3992900742E2A /* ExpensesList.m */; };
-		03EF9DAE21F4BF9D0024EA47 /* AddExpenseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DAD21F4BF9D0024EA47 /* AddExpenseView.m */; };
 		03EF9DC021F4CDB60024EA47 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 03EF9DBF21F4CDB60024EA47 /* libsqlite3.tbd */; };
 		03EF9DC321F511CD0024EA47 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC221F511CD0024EA47 /* Database.m */; };
 		03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC621F523170024EA47 /* CategoriesList.m */; };
@@ -24,6 +23,7 @@
 		03EF9DE421F902810024EA47 /* SettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DE321F902800024EA47 /* SettingCell.m */; };
 		03EF9DE821F903320024EA47 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DE721F903320024EA47 /* Settings.m */; };
 		03EF9DF221FA60330024EA47 /* DetailsTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DF121FA60330024EA47 /* DetailsTable.m */; };
+		03EF9DF521FA7CD40024EA47 /* AddExpenseTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DF421FA7CD40024EA47 /* AddExpenseTable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,8 +38,6 @@
 		03A95D6221F37A7A00742E2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03A95D6F21F3992900742E2A /* ExpensesList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpensesList.h; sourceTree = "<group>"; };
 		03A95D7021F3992900742E2A /* ExpensesList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpensesList.m; sourceTree = "<group>"; };
-		03EF9DAC21F4BF9D0024EA47 /* AddExpenseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddExpenseView.h; sourceTree = "<group>"; };
-		03EF9DAD21F4BF9D0024EA47 /* AddExpenseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddExpenseView.m; sourceTree = "<group>"; };
 		03EF9DBF21F4CDB60024EA47 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		03EF9DC121F511CD0024EA47 /* Database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		03EF9DC221F511CD0024EA47 /* Database.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
@@ -56,6 +54,8 @@
 		03EF9DE721F903320024EA47 /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		03EF9DF021FA60330024EA47 /* DetailsTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailsTable.h; sourceTree = "<group>"; };
 		03EF9DF121FA60330024EA47 /* DetailsTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailsTable.m; sourceTree = "<group>"; };
+		03EF9DF321FA7CD40024EA47 /* AddExpenseTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddExpenseTable.h; sourceTree = "<group>"; };
+		03EF9DF421FA7CD40024EA47 /* AddExpenseTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddExpenseTable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +147,8 @@
 		03EF9DAB21F4BF5E0024EA47 /* Add expense */ = {
 			isa = PBXGroup;
 			children = (
-				03EF9DAC21F4BF9D0024EA47 /* AddExpenseView.h */,
-				03EF9DAD21F4BF9D0024EA47 /* AddExpenseView.m */,
+				03EF9DF321FA7CD40024EA47 /* AddExpenseTable.h */,
+				03EF9DF421FA7CD40024EA47 /* AddExpenseTable.m */,
 			);
 			path = "Add expense";
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */,
 				03EF9DE821F903320024EA47 /* Settings.m in Sources */,
 				03EF9DC321F511CD0024EA47 /* Database.m in Sources */,
-				03EF9DAE21F4BF9D0024EA47 /* AddExpenseView.m in Sources */,
+				03EF9DF521FA7CD40024EA47 /* AddExpenseTable.m in Sources */,
 				03A95D5521F37A7800742E2A /* AppDelegate.m in Sources */,
 				03EF9DDF21F74FCF0024EA47 /* CSV.m in Sources */,
 				03A95D7121F3992900742E2A /* ExpensesList.m in Sources */,
