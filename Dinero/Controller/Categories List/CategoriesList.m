@@ -28,6 +28,8 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     getDatabaseInstance = [Database getDatabaseInstance];
     self.categories = [getDatabaseInstance ReturnCategories];
+    
+    self.tableView.allowsSelection = NO;
 }
 
 #pragma mark - Table view data source
@@ -53,7 +55,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ExpenseRow" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CategoryRow" forIndexPath:indexPath];
 
     cell.textLabel.text = self.categories[indexPath.row];
     
