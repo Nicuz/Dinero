@@ -25,6 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //Add top spacing
+    [self.tableView setContentInset:UIEdgeInsetsMake(15,0,0,0)];
+    
     getDatabaseInstance = [Database getDatabaseInstance];
     self.expenses = [getDatabaseInstance ReturnExpenses];
 }
