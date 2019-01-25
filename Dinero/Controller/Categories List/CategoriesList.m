@@ -27,7 +27,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     getDatabaseInstance = [Database getDatabaseInstance];
-    self.categories = [getDatabaseInstance ReturnCategories];
+    self.categories = [getDatabaseInstance ReturnItems:@"CATEGORIES"];
     
     self.tableView.allowsSelection = NO;
 }
@@ -69,8 +69,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [getDatabaseInstance RemoveCategory:self.categories[indexPath.row]];
-        self.categories = [getDatabaseInstance ReturnCategories];
+        [getDatabaseInstance RemoveValue:@"CATEGORIES" value:self.categories[indexPath.row]];
+        self.categories = [getDatabaseInstance ReturnItems:@"CATEGORIES"];
         [tableView reloadData];
     }
 }
@@ -97,8 +97,8 @@
             [self presentViewController:error animated:YES completion:nil];
             
         } else {
-            [self->getDatabaseInstance AddCategory:alert.textFields[0].text];
-            self.categories = [self->getDatabaseInstance ReturnCategories];
+            [self->getDatabaseInstance AddValue:@"CATEGORIES" value:alert.textFields[0].text];
+            self.categories = [self->getDatabaseInstance ReturnItems:@"CATEGORIES"];
             [self.tableView reloadData];
         }
     }];

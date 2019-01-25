@@ -32,11 +32,9 @@
     
     _datePicker.maximumDate = [NSDate date];
     
-    self.currencies = [NSMutableArray arrayWithObjects:@"AUD",@"CNY",
-                       @"EUR", @"GBP", @"JPY", @"USD", nil];
-    
     getDatabaseInstance = [Database getDatabaseInstance];
-    self.categories = [getDatabaseInstance ReturnCategories];
+    self.categories = [getDatabaseInstance ReturnItems:@"CATEGORIES"];
+    self.currencies = [getDatabaseInstance ReturnItems:@"CURRENCIES"];
     
     _currentCurrency = self.currencies[0];
     _currentCategory = self.categories[0];

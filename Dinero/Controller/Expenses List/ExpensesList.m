@@ -90,7 +90,7 @@
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-    if ([identifier isEqualToString:@"showAddSomething"] && [getDatabaseInstance ReturnCategories].count == 0) {
+    if ([identifier isEqualToString:@"showAddSomething"] && [getDatabaseInstance ReturnItems:@"CATEGORIES"].count == 0) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Category list is empty!" message:@"You don't have any categories, you can't save expenses before you add at least one category." preferredStyle:UIAlertControllerStyleAlert];
             
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Got it!" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		033592FE21FB8D9300A53180 /* CurrenciesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 033592FD21FB8D9300A53180 /* CurrenciesList.m */; };
 		0372944921F3EB8C0037D361 /* FontAwesome5regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0372944821F3EB830037D361 /* FontAwesome5regular.otf */; };
 		0372944B21F3ECF20037D361 /* FontAwesome5solid.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0372944A21F3ECEE0037D361 /* FontAwesome5solid.otf */; };
 		03A95D5521F37A7800742E2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D5421F37A7800742E2A /* AppDelegate.m */; };
@@ -27,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		033592FC21FB8D9300A53180 /* CurrenciesList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurrenciesList.h; sourceTree = "<group>"; };
+		033592FD21FB8D9300A53180 /* CurrenciesList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CurrenciesList.m; sourceTree = "<group>"; };
 		0372944821F3EB830037D361 /* FontAwesome5regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5regular.otf; sourceTree = "<group>"; };
 		0372944A21F3ECEE0037D361 /* FontAwesome5solid.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5solid.otf; sourceTree = "<group>"; };
 		03A95D5021F37A7800742E2A /* Dinero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dinero.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		033592FB21FB8D4A00A53180 /* Currencies List */ = {
+			isa = PBXGroup;
+			children = (
+				033592FC21FB8D9300A53180 /* CurrenciesList.h */,
+				033592FD21FB8D9300A53180 /* CurrenciesList.m */,
+			);
+			path = "Currencies List";
+			sourceTree = "<group>";
+		};
 		03A95D4721F37A7800742E2A = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +140,7 @@
 			children = (
 				03EF9DAB21F4BF5E0024EA47 /* Add expense */,
 				03EF9DC421F522D10024EA47 /* Categories List */,
+				033592FB21FB8D4A00A53180 /* Currencies List */,
 				03EF9DD421F69A000024EA47 /* Details */,
 				03EF9DAA21F4BF4D0024EA47 /* Expenses List */,
 				03EF9DE521F902F10024EA47 /* Settings */,
@@ -307,6 +320,7 @@
 			files = (
 				03A95D6321F37A7A00742E2A /* main.m in Sources */,
 				03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */,
+				033592FE21FB8D9300A53180 /* CurrenciesList.m in Sources */,
 				03EF9DE821F903320024EA47 /* Settings.m in Sources */,
 				03EF9DC321F511CD0024EA47 /* Database.m in Sources */,
 				03EF9DF521FA7CD40024EA47 /* AddExpenseTable.m in Sources */,

@@ -47,27 +47,40 @@
                 char *errMsg;
                 
                 const char *createCategoriesTable = "CREATE TABLE CATEGORIES (NAME TEXT NOT NULL PRIMARY KEY)";
+                const char *createCurrenciesTable = "CREATE TABLE CURRENCIES (NAME TEXT NOT NULL PRIMARY KEY)";
                 const char *createExpensesTable =
-                "CREATE TABLE EXPENSES (NAME TEXT NOT NULL, AMOUNT REAL NOT NULL, DATE DATETIME NOT NULL, CURRENCY TEXT NOT NULL, CATEGORY TEXT NOT NULL REFERENCES CATEGORIES(NAME), NOTES TEXT, CONSTRAINT avoid_duplicates UNIQUE (NAME, DATE))";
-                
-                const char *InsertBillsCategory =
-                "INSERT INTO CATEGORIES VALUES (\"Bills\")";
-                const char *InsertFoodCategory =
-                "INSERT INTO CATEGORIES VALUES (\"Food\")";
-                const char *InsertHealthcareCategory = "INSERT INTO CATEGORIES VALUES (\"Healthcare\")";
-                
+                "CREATE TABLE EXPENSES (NAME TEXT NOT NULL, AMOUNT REAL NOT NULL, DATE DATETIME NOT NULL, CURRENCY TEXT NOT NULL REFERENCES CURRENCIES(NAME), CATEGORY TEXT NOT NULL REFERENCES CATEGORIES(NAME), NOTES TEXT, CONSTRAINT avoid_duplicates UNIQUE (NAME, DATE))";
                 
                 if (sqlite3_exec(expensesDB, createCategoriesTable, NULL, NULL, &errMsg) != SQLITE_OK) {
-                    NSLog(@"Can't create CATEGORIES table, already exists.");
+                    NSLog(@"Unable to create CATEGORIES table.");
+                } else if (sqlite3_exec(expensesDB, createCurrenciesTable, NULL, NULL, &errMsg) != SQLITE_OK) {
+                    NSLog(@"Unable to create CURRENCIES table.");
                 } else if (sqlite3_exec(expensesDB, createExpensesTable, NULL, NULL, &errMsg) != SQLITE_OK) {
-                    NSLog(@"Can't create EXPENSES table, already exists.");
-                } else if (sqlite3_exec(expensesDB, InsertBillsCategory, NULL, NULL, &errMsg) != SQLITE_OK) {
-                    NSLog(@"Can't insert BILLS category, already exists.");
-                } else if (sqlite3_exec(expensesDB, InsertFoodCategory, NULL, NULL, &errMsg) != SQLITE_OK) {
-                    NSLog(@"Can't insert FOOD category, already exists.");
-                } else if (sqlite3_exec(expensesDB, InsertHealthcareCategory, NULL, NULL, &errMsg) != SQLITE_OK) {
-                    NSLog(@"Can't insert HEALTHCARE category, already exists.");
+                    NSLog(@"Unable to create EXPENSES table.");
                 }
+                
+                NSMutableArray *categories = [NSMutableArray arrayWithObjects:@"Bills",@"Food",
+                                              @"Healthcare", @"Services", nil];
+                
+                NSMutableArray *currencies = [NSMutableArray arrayWithObjects:@"AUD",@"CNY",
+                                              @"EUR", @"GBP", @"JPY", @"USD", nil];
+                
+                for (NSString *category in categories) {
+                    _insertValue = [NSString stringWithFormat:
+                                                @"INSERT INTO CATEGORIES VALUES (\"%@\")",
+                                                category];
+                    
+                    sqlite3_exec(expensesDB, [_insertValue UTF8String], NULL, NULL, &errMsg);
+                }
+                
+                for (NSString *currency in currencies) {
+                    _insertValue = [NSString stringWithFormat:
+                                                @"INSERT INTO CURRENCIES VALUES (\"%@\")",
+                                                currency];
+                    
+                    sqlite3_exec(expensesDB, [_insertValue UTF8String], NULL, NULL, &errMsg);
+                }
+                
                 
                 sqlite3_close(expensesDB);
             } else {
@@ -122,42 +135,42 @@
     }
 }
 
-- (void) AddCategory:(NSString *)name {
+- (void) AddValue:(NSString *)table value:(NSString *)value {
     
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
-        NSString *insertCategory = [NSString stringWithFormat:
-                                   @"INSERT INTO CATEGORIES (NAME) VALUES (\"%@\")",
-                                   name];
+        _insertValue = [NSString stringWithFormat:
+                                   @"INSERT INTO %@ (NAME) VALUES (\"%@\")",
+                                   table, value];
         
-        sqlite3_prepare_v2(expensesDB, [insertCategory UTF8String],-1, &statement, NULL);
+        sqlite3_prepare_v2(expensesDB, [_insertValue UTF8String],-1, &statement, NULL);
         
         if (sqlite3_step(statement) != SQLITE_DONE) {
-            NSLog(@"Failed to add category.");
+            NSLog(@"Failed to add value.");
         } else {
-            NSLog(@"Category saved succesfully.");
+            NSLog(@"Value saved succesfully.");
         }
         sqlite3_finalize(statement);
         sqlite3_close(expensesDB);
     }
 }
 
-- (void) RemoveCategory:(NSString *)name {
+- (void) RemoveValue:(NSString *)table value:(NSString *)value {
     
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
-        NSString *deleteCategory = [NSString stringWithFormat:
-                                    @"DELETE FROM CATEGORIES WHERE NAME = \"%@\"",
-                                    name];
+        NSString *deleteValue = [NSString stringWithFormat:
+                                    @"DELETE FROM %@ WHERE NAME = \"%@\"",
+                                    table, value];
         
-        sqlite3_prepare_v2(expensesDB, [deleteCategory UTF8String],-1, &statement, NULL);
+        sqlite3_prepare_v2(expensesDB, [deleteValue UTF8String],-1, &statement, NULL);
         
         if (sqlite3_step(statement) != SQLITE_DONE) {
-            NSLog(@"Category deleted");
+            NSLog(@"Value deleted");
         } else {
-            NSLog(@"Can't remove category");
+            NSLog(@"Can't remove value");
         }
         sqlite3_finalize(statement);
         sqlite3_close(expensesDB);
@@ -198,24 +211,25 @@
     return expensesList;
 }
 
-- (NSMutableArray *) ReturnCategories {
-    NSMutableArray *categoriesList = [[NSMutableArray alloc] init];
+//Used for categories and currencies
+- (NSMutableArray *) ReturnItems:(NSString *)table {
+    NSMutableArray *items = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
-        NSString *selectCategories = @"SELECT * FROM CATEGORIES ORDER BY NAME";
+        NSString *selectValues = [NSString stringWithFormat: @"SELECT NAME FROM %@ ORDER BY NAME", table];
         
-        if (sqlite3_prepare_v2(expensesDB, [selectCategories UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+        if (sqlite3_prepare_v2(expensesDB, [selectValues UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
-                NSString *category = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 0)];
+                NSString *item = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 0)];
                 
-                [categoriesList addObject:category];
+                [items addObject:item];
             }
         }
         sqlite3_finalize(statement);
         sqlite3_close(expensesDB);
     }
-    return categoriesList;
+    return items;
 }
 
 - (NSString *) ReturnDate:(NSString *)name amount:(NSString *)amount currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes {

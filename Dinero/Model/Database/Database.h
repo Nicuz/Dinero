@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *expensesDB;
+@property (strong, nonatomic) NSString *insertValue;
 
 + (id)getDatabaseInstance;
 
@@ -23,9 +24,9 @@
 - (void) RemoveExpense:(NSString *)name amount:(NSString *)amount date:(NSString *)date currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes;
 - (NSMutableArray *) ReturnExpenses;
 
-- (void) AddCategory:(NSString *)name;
-- (void) RemoveCategory:(NSString *)name;
-- (NSMutableArray *) ReturnCategories;
+- (void) AddValue:(NSString *)table value:(NSString *)value;
+- (void) RemoveValue:(NSString *)table value:(NSString *)value;
+- (NSMutableArray *) ReturnItems:(NSString *)table;
 
 - (NSString *) ReturnDate:(NSString *)name amount:(NSString *)amount currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes;
 
