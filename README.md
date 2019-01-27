@@ -14,6 +14,7 @@ Dinero is a simple expenses tracker for iOS made for a University course.
 
 ## Extra features
 This is a list of features not required but that I added for a better UX. You have the ability to:
+* edit expenses
 * share expenses
 * clear the expenses list
 * clear the CSV file
