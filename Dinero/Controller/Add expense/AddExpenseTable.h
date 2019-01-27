@@ -7,16 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Expense.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AddExpenseTable : UITableViewController
+@interface AddExpenseTable : UITableViewController <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 @property (strong, nonatomic) IBOutlet UITextField *nameField;
 @property (strong, nonatomic) IBOutlet UITextField *amountField;
 @property (strong, nonatomic) IBOutlet UIPickerView *currencyPicker;
 @property (strong, nonatomic) IBOutlet UIPickerView *categoryPicker;
 @property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (strong, nonatomic) IBOutlet UITextField *notesField;
+
+@property (strong, nonatomic) Expense *expense;
 
 @property (nonatomic) NSMutableArray *currencies;
 @property (nonatomic) NSMutableArray *categories;

@@ -11,6 +11,7 @@
 
 @interface AddExpenseTable() {
     @public Database *getDatabaseInstance;
+    @public Expense *getExpenseInstance;
 }
 
 @end
@@ -36,8 +37,9 @@
     self.categories = [getDatabaseInstance ReturnItems:@"CATEGORIES"];
     self.currencies = [getDatabaseInstance ReturnItems:@"CURRENCIES"];
     
-    _currentCurrency = self.currencies[0];
-    _currentCategory = self.categories[0];
+    _expense = [Expense getExpenseInstance];
+    [_expense setCurrency:self.currencies[0]];
+    [_expense setCategory:self.categories[0]];
     
     //Subscribe to taps on the UI and dismiss the keyboard
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -86,9 +88,9 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     
     if (pickerView == _currencyPicker) {
-        _currentCurrency = _currencies[row];
+        [_expense setCurrency:_currencies[row]];
     } else {
-        _currentCategory = _categories[row];
+        [_expense setCategory:_categories[row]];
     }
 }
 
@@ -96,8 +98,8 @@
     //Get current date from DatePicker
     NSDate *myDate = _datePicker.date;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    _currentDate = [dateFormat stringFromDate:myDate];
+    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [_expense setDate:[dateFormat stringFromDate:myDate]];
     
     //Replace commas
     NSString *amountWithComma = [_amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
@@ -110,7 +112,11 @@
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
-        [getDatabaseInstance AddExpense:_nameField.text amount:[amountWithComma doubleValue] date:_currentDate currency:_currentCurrency category:_currentCategory notes:_notesField.text];
+        [_expense setName:_nameField.text];
+        [_expense setAmount:[amountWithComma floatValue]];
+        [_expense setNotes:_notesField.text];
+        
+        [getDatabaseInstance AddExpense:_expense];
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!" message:@"Data saved succesfully!" preferredStyle:UIAlertControllerStyleAlert];
         

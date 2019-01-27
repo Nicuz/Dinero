@@ -7,11 +7,14 @@
 //
 
 #import "ExpensesList.h"
+#import "Expense.h"
 #import "Database.h"
 #import "DetailsTable.h"
+#import "EditExpense.h"
 #import "CSV.h"
 
 @interface ExpensesList() {
+    @public Expense *expense;
     @public Database *getDatabaseInstance;
     @public CSV *getCSVInstance;
 }
@@ -28,6 +31,7 @@
     //Add top spacing
     [self.tableView setContentInset:UIEdgeInsetsMake(15,0,0,0)];
     
+    expense = [Expense getExpenseInstance];
     getDatabaseInstance = [Database getDatabaseInstance];
     self.expenses = [getDatabaseInstance ReturnExpenses];
 }
@@ -79,11 +83,20 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        //Select date with correct format from database
-        NSString *date = [getDatabaseInstance ReturnDate:self.expenses[indexPath.row][@"name"] amount:self.expenses[indexPath.row][@"amount"] currency:self.expenses[indexPath.row][@"currency"] category:self.expenses[indexPath.row][@"category"] notes:self.expenses[indexPath.row][@"notes"]];
+        [expense setName:self.expenses[indexPath.row][@"name"]];
+        [expense setAmount:[self.expenses[indexPath.row][@"amount"] floatValue]];
+        [expense setCurrency:self.expenses[indexPath.row][@"currency"]];
+        [expense setCategory:self.expenses[indexPath.row][@"category"]];
+        [expense setNotes:self.expenses[indexPath.row][@"notes"]];
         
-        //Delete expense from dataase
-        [getDatabaseInstance RemoveExpense:self.expenses[indexPath.row][@"name"] amount:self.expenses[indexPath.row][@"amount"] date:date currency:self.expenses[indexPath.row][@"currency"] category:self.expenses[indexPath.row][@"category"] notes:self.expenses[indexPath.row][@"notes"]];
+        //Select date with correct format from database
+        NSString *date = [getDatabaseInstance ReturnDate:expense];
+        
+        //Update date value
+        [expense setDate:date];
+        
+        [getDatabaseInstance RemoveExpense:(Expense *)expense];
+        
         self.expenses = [getDatabaseInstance ReturnExpenses];
         [tableView reloadData];
     }
@@ -108,12 +121,13 @@
     if ([segue.identifier isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         DetailsTable *detailView = [segue destinationViewController];
-        detailView.expenseValue = self.expenses[indexPath.row][@"name"];
-        detailView.dateValue = self.expenses[indexPath.row][@"date"];
-        detailView.amountValue = self.expenses[indexPath.row][@"amount"];
-        detailView.currencyValue = self.expenses[indexPath.row][@"currency"];
-        detailView.categoryValue = self.expenses[indexPath.row][@"category"];
-        detailView.notesValue = self.expenses[indexPath.row][@"notes"];
+        detailView.expense = [Expense getExpenseInstance];
+        [detailView.expense setName:self.expenses[indexPath.row][@"name"]];
+        [detailView.expense setDate:self.expenses[indexPath.row][@"date"]];
+        [detailView.expense setAmount:[self.expenses[indexPath.row][@"amount"] floatValue]];
+        [detailView.expense setCurrency:self.expenses[indexPath.row][@"currency"]];
+        [detailView.expense setCategory:self.expenses[indexPath.row][@"category"]];
+        [detailView.expense setNotes:self.expenses[indexPath.row][@"notes"]];
     }
         
 }
@@ -139,9 +153,21 @@
             for (NSString *row in rows){
                 NSArray* columns = [row componentsSeparatedByString:@","];
                 if (columns.count == 5) {
-                    [self->getDatabaseInstance AddExpense:columns[0] amount:[columns[1] doubleValue] date:columns[2] currency:columns[3] category:columns[4] notes:@""];
+                    [self->expense setName:columns[0]];
+                    [self->expense setAmount:[columns[1] floatValue]];
+                    [self->expense setDate:columns[2]];
+                    [self->expense setCurrency:columns[3]];
+                    [self->expense setCategory:columns[4]];
+                    [self->expense setNotes:@""];
+                    [self->getDatabaseInstance AddExpense:self->expense];
                 } else if (columns.count == 6) {
-                    [self->getDatabaseInstance AddExpense:columns[0] amount:[columns[1] doubleValue] date:columns[2] currency:columns[3] category:columns[4] notes:columns[5]];
+                    [self->expense setName:columns[0]];
+                    [self->expense setAmount:[columns[1] floatValue]];
+                    [self->expense setDate:columns[2]];
+                    [self->expense setCurrency:columns[3]];
+                    [self->expense setCategory:columns[4]];
+                    [self->expense setNotes:columns[5]];
+                    [self->getDatabaseInstance AddExpense:self->expense];
                 }
             }
             self.expenses = [self->getDatabaseInstance ReturnExpenses];
@@ -163,4 +189,38 @@
     }
     
 }
+
+-(IBAction)unwindToMainMenu:(UIStoryboardSegue *)unwindSegue {
+    EditExpense *editView = [unwindSegue sourceViewController];
+    
+    //Select date with correct format from database
+    //editView.expense.name contains data passed by segue from DetailsTable.m
+    NSString *date = [getDatabaseInstance ReturnDate:editView.expense];
+    
+    //Replace commas
+    NSString *amountWithComma = [editView.amountField.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+    
+    NSString *rowid = [getDatabaseInstance ReturnRowid:[editView.expense getName] date:date];
+    
+    //Get current date from DatePicker
+    NSDate *myDate = editView.datePicker.date;
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+    editView.currentDate = [dateFormat stringFromDate:myDate];
+    [dateFormat setDateFormat:@"HH:mm:ss"];
+    //Add current time to select date from DatePicker
+    editView.currentDate = [NSString stringWithFormat:@"%@ %@", editView.currentDate, [dateFormat stringFromDate:[NSDate date]]];
+    
+    editView.expense = [Expense getExpenseInstance];
+    [expense setName:editView.nameField.text];
+    [expense setDate:editView.currentDate];
+    [expense setAmount:[amountWithComma floatValue]];
+    [expense setCurrency:editView.currentCurrency];
+    [expense setCategory:editView.currentCategory];
+    [expense setNotes:editView.notesField.text];
+    
+    [getDatabaseInstance UpdateExpense:editView.expense rowid:rowid];
+    
+};
+
 @end

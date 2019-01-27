@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import "Expense.h"
 
 @interface Database : NSObject {
     NSString *databasePath;
@@ -20,15 +21,17 @@
 
 + (id)getDatabaseInstance;
 
-- (void) AddExpense:(NSString *)name amount:(double)amount date:(NSString *)date currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes;
-- (void) RemoveExpense:(NSString *)name amount:(NSString *)amount date:(NSString *)date currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes;
+- (void) AddExpense:(Expense *)expense;
+- (void) RemoveExpense:(Expense *)expense;
+- (void) UpdateExpense:(Expense *)expense rowid:(NSString *)rowid;
 - (NSMutableArray *) ReturnExpenses;
 
 - (void) AddValue:(NSString *)table value:(NSString *)value;
 - (void) RemoveValue:(NSString *)table value:(NSString *)value;
 - (NSMutableArray *) ReturnItems:(NSString *)table;
 
-- (NSString *) ReturnDate:(NSString *)name amount:(NSString *)amount currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes;
+- (NSString *) ReturnDate:(Expense *)expense;
+- (NSString *) ReturnRowid:(NSString *)name date:(NSString *)date;
 
 - (void) ClearExpensesList;
 

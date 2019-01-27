@@ -91,14 +91,14 @@
     return self;
 }
 
-- (void) AddExpense:(NSString *)name amount:(double)amount date:(NSString *)date currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes {
+- (void) AddExpense:(Expense *)expense {
     
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
         NSString *insertExpense = [NSString stringWithFormat:
                                    @"INSERT INTO EXPENSES (NAME, AMOUNT, DATE, CURRENCY, CATEGORY, NOTES) VALUES (\"%@\", \"%.02f\", \"%@\", \"%@\", \"%@\", \"%@\")",
-         name, amount, date, currency, category, notes];
+                                   [expense getName], [expense getAmount], [expense getDate], [expense getCurrency], [expense getCategory], [expense getNotes]];
         
         sqlite3_exec(expensesDB, "PRAGMA foreign_keys = on", NULL, NULL, NULL);
         
@@ -114,14 +114,14 @@
     }
 }
 
-- (void) RemoveExpense:(NSString *)name amount:(NSString *)amount date:(NSString *)date currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes {
+- (void) RemoveExpense:(Expense *)expense {
     
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
         NSString *deleteExpense = [NSString stringWithFormat:
-                                   @"DELETE FROM EXPENSES WHERE NAME = \"%@\" AND AMOUNT = \"%@\" AND DATE = \"%@\" AND CURRENCY = \"%@\" AND CATEGORY = \"%@\" AND NOTES = \"%@\"",
-                                   name, amount, date, currency, category, notes];
+                                   @"DELETE FROM EXPENSES WHERE NAME = \"%@\" AND AMOUNT = \"%.02f\" AND DATE = \"%@\" AND CURRENCY = \"%@\" AND CATEGORY = \"%@\" AND NOTES = \"%@\"",
+                                   [expense getName], [expense getAmount], [expense getDate], [expense getCurrency], [expense getCategory], [expense getNotes]];
         
         sqlite3_prepare_v2(expensesDB, [deleteExpense UTF8String],-1, &statement, NULL);
         
@@ -133,6 +133,62 @@
         sqlite3_finalize(statement);
         sqlite3_close(expensesDB);
     }
+}
+
+- (void) UpdateExpense:(Expense *)expense rowid:(NSString *)rowid {
+    
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
+        NSString *updateValues = [NSString stringWithFormat:
+                                  @"UPDATE EXPENSES SET NAME = \"%@\", AMOUNT = \"%.02f\", DATE = \"%@\", CURRENCY = \"%@\", CATEGORY = \"%@\", NOTES = \"%@\" WHERE rowid = \"%@\"",
+                                  [expense getName], [expense getAmount], [expense getDate], [expense getCurrency], [expense getCategory], [expense getNotes], rowid];
+        
+        
+        sqlite3_prepare_v2(expensesDB, [updateValues UTF8String],-1, &statement, NULL);
+        
+        if (sqlite3_step(statement) != SQLITE_DONE) {
+            NSLog(@"Can't update value");
+        } else {
+            NSLog(@"Values updated");
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(expensesDB);
+    }
+}
+
+- (NSMutableArray *) ReturnExpenses {
+    NSMutableArray *expensesList = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
+        NSString *selectExpenses = @"SELECT NAME, AMOUNT, strftime('%d/%m/%Y', DATE), CURRENCY, CATEGORY, NOTES FROM EXPENSES ORDER BY DATE DESC";
+        
+        if (sqlite3_prepare_v2(expensesDB, [selectExpenses UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                NSString *expense = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 0)];
+                NSString *amount = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 1)];
+                NSString *date = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 2)];
+                NSString *currency = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 3)];
+                NSString *category = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 4)];
+                NSString *notes = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 5)];
+                
+                NSDictionary *expensesData= [NSDictionary dictionaryWithObjectsAndKeys:
+                                             expense, @"name",
+                                             amount, @"amount",
+                                             date, @"date",
+                                             currency, @"currency",
+                                             category, @"category",
+                                             notes, @"notes",
+                                             nil];
+                
+                [expensesList addObject:expensesData];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(expensesDB);
+    }
+    return expensesList;
 }
 
 - (void) AddValue:(NSString *)table value:(NSString *)value {
@@ -168,47 +224,13 @@
         sqlite3_prepare_v2(expensesDB, [deleteValue UTF8String],-1, &statement, NULL);
         
         if (sqlite3_step(statement) != SQLITE_DONE) {
-            NSLog(@"Value deleted");
-        } else {
             NSLog(@"Can't remove value");
+        } else {
+            NSLog(@"Valued deleted");
         }
         sqlite3_finalize(statement);
         sqlite3_close(expensesDB);
     }
-}
-
-- (NSMutableArray *) ReturnExpenses {
-    NSMutableArray *expensesList = [[NSMutableArray alloc] init];
-    sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
-    if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
-        NSString *selectExpenses = @"SELECT NAME, AMOUNT, strftime('%d/%m/%Y', DATE), CURRENCY, CATEGORY, NOTES FROM EXPENSES ORDER BY DATE DESC";
-        
-        if (sqlite3_prepare_v2(expensesDB, [selectExpenses UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            while (sqlite3_step(statement) == SQLITE_ROW) {
-                NSString *expense = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 0)];
-                NSString *amount = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 1)];
-                NSString *date = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 2)];
-                NSString *currency = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 3)];
-                NSString *category = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 4)];
-                NSString *notes = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 5)];
-                
-                NSDictionary *expensesData= [NSDictionary dictionaryWithObjectsAndKeys:
-                                     expense, @"name",
-                                     amount, @"amount",
-                                     date, @"date",
-                                     currency, @"currency",
-                                     category, @"category",
-                                     notes, @"notes",
-                                     nil];
-                
-                [expensesList addObject:expensesData];
-            }
-        }
-        sqlite3_finalize(statement);
-        sqlite3_close(expensesDB);
-    }
-    return expensesList;
 }
 
 //Used for categories and currencies
@@ -232,14 +254,14 @@
     return items;
 }
 
-- (NSString *) ReturnDate:(NSString *)name amount:(NSString *)amount currency:(NSString *)currency category:(NSString *)category notes:(NSString *)notes {
+- (NSString *) ReturnDate:(Expense *)expense {
     NSString *date;
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
         NSString *selectDate = [NSString stringWithFormat:
-                                @"SELECT DATE FROM EXPENSES WHERE NAME = \"%@\" AND AMOUNT = \"%@\" AND CURRENCY = \"%@\" AND CATEGORY = \"%@\" AND NOTES = \"%@\"",
-                                name, amount, currency, category, notes];
+                                @"SELECT DATE FROM EXPENSES WHERE NAME = \"%@\" AND AMOUNT = \"%.02f\" AND CURRENCY = \"%@\" AND CATEGORY = \"%@\" AND NOTES = \"%@\"",
+                                [expense getName], [expense getAmount], [expense getCurrency], [expense getCategory], [expense getNotes]];
         
         if (sqlite3_prepare_v2(expensesDB, [selectDate UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -250,6 +272,26 @@
         sqlite3_close(expensesDB);
     }
     return date;
+}
+
+- (NSString *) ReturnRowid:(NSString *)name date:(NSString *)date {
+    NSString *rowid;
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &expensesDB) == SQLITE_OK) {
+        NSString *selectRowid = [NSString stringWithFormat:
+                                @"SELECT rowid FROM EXPENSES WHERE NAME = \"%@\" AND DATE = \"%@\"",
+                                name, date];
+        
+        if (sqlite3_prepare_v2(expensesDB, [selectRowid UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                rowid = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 0)];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(expensesDB);
+    }
+    return rowid;
 }
 
 - (void) ClearExpensesList {

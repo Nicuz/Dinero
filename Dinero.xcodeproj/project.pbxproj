@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		033592FE21FB8D9300A53180 /* CurrenciesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 033592FD21FB8D9300A53180 /* CurrenciesList.m */; };
+		0335930221FBD79D00A53180 /* EditExpense.m in Sources */ = {isa = PBXBuildFile; fileRef = 0335930121FBD79D00A53180 /* EditExpense.m */; };
 		0372944921F3EB8C0037D361 /* FontAwesome5regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0372944821F3EB830037D361 /* FontAwesome5regular.otf */; };
 		0372944B21F3ECF20037D361 /* FontAwesome5solid.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0372944A21F3ECEE0037D361 /* FontAwesome5solid.otf */; };
 		03A95D5521F37A7800742E2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D5421F37A7800742E2A /* AppDelegate.m */; };
@@ -15,6 +16,7 @@
 		03A95D6021F37A7A00742E2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03A95D5E21F37A7A00742E2A /* LaunchScreen.storyboard */; };
 		03A95D6321F37A7A00742E2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D6221F37A7A00742E2A /* main.m */; };
 		03A95D7121F3992900742E2A /* ExpensesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A95D7021F3992900742E2A /* ExpensesList.m */; };
+		03BDD57121FCCCBC00C390EB /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BDD57021FCCCBC00C390EB /* Expense.m */; };
 		03EF9DC021F4CDB60024EA47 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 03EF9DBF21F4CDB60024EA47 /* libsqlite3.tbd */; };
 		03EF9DC321F511CD0024EA47 /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC221F511CD0024EA47 /* Database.m */; };
 		03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EF9DC621F523170024EA47 /* CategoriesList.m */; };
@@ -30,6 +32,8 @@
 /* Begin PBXFileReference section */
 		033592FC21FB8D9300A53180 /* CurrenciesList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurrenciesList.h; sourceTree = "<group>"; };
 		033592FD21FB8D9300A53180 /* CurrenciesList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CurrenciesList.m; sourceTree = "<group>"; };
+		0335930021FBD79D00A53180 /* EditExpense.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditExpense.h; sourceTree = "<group>"; };
+		0335930121FBD79D00A53180 /* EditExpense.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditExpense.m; sourceTree = "<group>"; };
 		0372944821F3EB830037D361 /* FontAwesome5regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5regular.otf; sourceTree = "<group>"; };
 		0372944A21F3ECEE0037D361 /* FontAwesome5solid.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5solid.otf; sourceTree = "<group>"; };
 		03A95D5021F37A7800742E2A /* Dinero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dinero.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +45,8 @@
 		03A95D6221F37A7A00742E2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03A95D6F21F3992900742E2A /* ExpensesList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpensesList.h; sourceTree = "<group>"; };
 		03A95D7021F3992900742E2A /* ExpensesList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpensesList.m; sourceTree = "<group>"; };
+		03BDD56F21FCCCBC00C390EB /* Expense.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Expense.h; sourceTree = "<group>"; };
+		03BDD57021FCCCBC00C390EB /* Expense.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Expense.m; sourceTree = "<group>"; };
 		03EF9DBF21F4CDB60024EA47 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		03EF9DC121F511CD0024EA47 /* Database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		03EF9DC221F511CD0024EA47 /* Database.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
@@ -80,6 +86,15 @@
 				033592FD21FB8D9300A53180 /* CurrenciesList.m */,
 			);
 			path = "Currencies List";
+			sourceTree = "<group>";
+		};
+		033592FF21FBD77400A53180 /* Edit expense */ = {
+			isa = PBXGroup;
+			children = (
+				0335930021FBD79D00A53180 /* EditExpense.h */,
+				0335930121FBD79D00A53180 /* EditExpense.m */,
+			);
+			path = "Edit expense";
 			sourceTree = "<group>";
 		};
 		03A95D4721F37A7800742E2A = {
@@ -131,8 +146,18 @@
 			children = (
 				03EF9DDC21F74FA50024EA47 /* CSV */,
 				03EF9DDA21F74F870024EA47 /* Database */,
+				03BDD56E21FCCC9600C390EB /* Expense */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		03BDD56E21FCCC9600C390EB /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+				03BDD56F21FCCCBC00C390EB /* Expense.h */,
+				03BDD57021FCCCBC00C390EB /* Expense.m */,
+			);
+			path = Expense;
 			sourceTree = "<group>";
 		};
 		03EF9DA921F4BF3F0024EA47 /* Controller */ = {
@@ -142,6 +167,7 @@
 				03EF9DC421F522D10024EA47 /* Categories List */,
 				033592FB21FB8D4A00A53180 /* Currencies List */,
 				03EF9DD421F69A000024EA47 /* Details */,
+				033592FF21FBD77400A53180 /* Edit expense */,
 				03EF9DAA21F4BF4D0024EA47 /* Expenses List */,
 				03EF9DE521F902F10024EA47 /* Settings */,
 			);
@@ -320,7 +346,9 @@
 			files = (
 				03A95D6321F37A7A00742E2A /* main.m in Sources */,
 				03EF9DC721F523170024EA47 /* CategoriesList.m in Sources */,
+				0335930221FBD79D00A53180 /* EditExpense.m in Sources */,
 				033592FE21FB8D9300A53180 /* CurrenciesList.m in Sources */,
+				03BDD57121FCCCBC00C390EB /* Expense.m in Sources */,
 				03EF9DE821F903320024EA47 /* Settings.m in Sources */,
 				03EF9DC321F511CD0024EA47 /* Database.m in Sources */,
 				03EF9DF521FA7CD40024EA47 /* AddExpenseTable.m in Sources */,

@@ -9,6 +9,7 @@
 #import "DetailsTable.h"
 #import "CSV.h"
 #import "Database.h"
+#import "EditExpense.h"
 
 @interface DetailsTable() {
     @public Database *getDatabaseInstance;
@@ -19,28 +20,28 @@
 
 @implementation DetailsTable
 
-@synthesize expense, amount, date, currency, category, notes;
-@synthesize expenseValue, amountValue, dateValue, currencyValue, categoryValue, notesValue;
+@synthesize expenseLabel, amountLabel, dateLabel, currencyLabel, categoryLabel, notesLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [expense setText:expenseValue];
-    [amount setText:amountValue];
-    [date setText:dateValue];
-    [currency setText:currencyValue];
-    [category setText:categoryValue];
-    [notes setText:notesValue];
+    [expenseLabel setText:[_expense getName]];
+    [amountLabel setText:[NSString stringWithFormat:@"%.02f", [_expense getAmount]]];
+    [dateLabel setText:[_expense getDate]];
+    [currencyLabel setText:[_expense getCurrency]];
+    [categoryLabel setText:[_expense getCategory]];
+    [notesLabel setText:[_expense getNotes]];
     
     getDatabaseInstance = [Database getDatabaseInstance];
-    NSString *dateFromDB = [getDatabaseInstance ReturnDate:expense.text amount:amount.text currency:currency.text category:category.text notes:notes.text];
+    NSString *dateFromDB = [getDatabaseInstance ReturnDate:_expense];
+    NSLog(@"%@", dateFromDB);
     
-    if (notes.text.length == 0) {
-        _shareString = [NSString stringWithFormat:@"ℹ️ %@\n💶 %@ %@\n🗓 %@\n❓ %@\n\nSent from Dinero app by Domenico Majorana", expense.text, currency.text, amount.text, date.text, category.text];
-        _CSVString = [NSString stringWithFormat:@"\n%@,%@,%@,%@,%@\n", expense.text, amount.text, dateFromDB, currency.text, category.text];
+    if (notesLabel.text.length == 0) {
+        _shareString = [NSString stringWithFormat:@"ℹ️ %@\n💶 %@ %@\n🗓 %@\n❓ %@\n\nSent from Dinero app by Domenico Majorana", expenseLabel.text, currencyLabel.text, amountLabel.text, dateLabel.text, categoryLabel.text];
+        _CSVString = [NSString stringWithFormat:@"\n%@,%@,%@,%@,%@\n", expenseLabel.text, amountLabel.text, dateFromDB, currencyLabel.text, categoryLabel.text];
     } else {
-        _shareString = [NSString stringWithFormat:@"ℹ️ %@\n💶 %@ %@\n🗓 %@\n❓ %@\n🗒 %@\n\nSent from Dinero app by Domenico Majorana", expense.text, currency.text, amount.text, date.text, category.text, notes.text];
-        _CSVString = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@\n", expense.text, amount.text, dateFromDB, currency.text, category.text, notes.text];
+        _shareString = [NSString stringWithFormat:@"ℹ️ %@\n💶 %@ %@\n🗓 %@\n❓ %@\n🗒 %@\n\nSent from Dinero app by Domenico Majorana", expenseLabel.text, currencyLabel.text, amountLabel.text, dateLabel.text, categoryLabel.text, notesLabel.text];
+        _CSVString = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@\n", expenseLabel.text, amountLabel.text, dateFromDB, currencyLabel.text, categoryLabel.text, notesLabel.text];
     }
     
     //Disable row selection
@@ -50,10 +51,20 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (notes.text.length == 0) {
+    if (notesLabel.text.length == 0) {
         return 4;
     }
     return 5;
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showEdit"]) {
+        EditExpense *editView = [segue destinationViewController];
+        editView.expense = [Expense getExpenseInstance];
+        editView.expense = _expense;
+    }
+    
 }
 
 - (IBAction)saveCSVAction:(id)sender {
